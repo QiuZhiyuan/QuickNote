@@ -2,17 +2,12 @@ package com.qiu.notes.ui.edit.widget;
 
 import android.view.ViewGroup;
 
-import com.qiu.base.lib.thread.ThreadUtils;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
-import com.qiu.notes.data.NoteDatabaseImpl;
 import com.qiu.notes.data.TextContentEntry;
 import com.qiu.notes.ui.base.widget.TextNoteItem;
-
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,30 +27,16 @@ public class EditNoteSection extends BaseRecyclerSection {
 
     @NonNull
     private NoteViewHolderFactory mNoteViewHolderFactory = new NoteViewHolderFactory();
+    @NonNull
+    private final TextContentEntry mEntry;
 
-    public EditNoteSection() {
-        loadData();
+    public EditNoteSection(@NonNull TextContentEntry entry) {
+        mEntry = entry;
+        prepareItems();
     }
 
-    private void loadData() {
-        ThreadUtils.i().postTask(new Runnable() {
-            @Override
-            public void run() {
-                final List<TextContentEntry> entryList = NoteDatabaseImpl.i().queryAll();
-                ThreadUtils.i().postTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        prepareItems(entryList);
-                    }
-                }, 0, false);
-            }
-        }, 0, true, true);
-    }
-
-    private void prepareItems(@NonNull List<TextContentEntry> entryList) {
-        for (TextContentEntry entry : entryList) {
-            mListEntry.add(new TextNoteItem(entry));
-        }
+    private void prepareItems() {
+        mListEntry.add(new TextNoteItem(mEntry));
     }
 
     @NonNull
