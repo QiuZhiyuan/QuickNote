@@ -1,4 +1,4 @@
-package com.qiu.notes.edit.widget;
+package com.qiu.notes.ui.edit.widget;
 
 import android.view.ViewGroup;
 
@@ -9,6 +9,7 @@ import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.NoteDatabaseImpl;
 import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.ui.base.widget.TextNoteItem;
 
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class EditNoteSection extends BaseRecyclerSection {
 
     private void prepareItems(@NonNull List<TextContentEntry> entryList) {
         for (TextContentEntry entry : entryList) {
-            mListEntry.add(new EditTextNoteItem(entry));
+            mListEntry.add(new TextNoteItem(entry));
         }
     }
 

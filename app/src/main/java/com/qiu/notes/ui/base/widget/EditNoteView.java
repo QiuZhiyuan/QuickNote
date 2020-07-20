@@ -1,4 +1,4 @@
-package com.qiu.notes.edit.widget;
+package com.qiu.notes.ui.base.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

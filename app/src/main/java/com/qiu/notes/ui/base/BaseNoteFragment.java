@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
+import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.notes.R;
+import com.qiu.notes.ui.edit.widget.EditNoteSection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +37,23 @@ public abstract class BaseNoteFragment extends Fragment {
     private State mState;
     @Nullable
     private List<OnStateChangeListener> mStateChangeListenerList;
-    @Nullable
-    protected BaseRecyclerView mContentView;
 
     public BaseNoteFragment() {
         super();
-        mState = State.START;
+        setState(State.START);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_base_note, container, false);
-        mContentView = view.findViewById(R.id.base_note_content);
-        return view;
+        return inflater.inflate(R.layout.fragment_base_note, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        prepareContentView((BaseRecyclerView) view.findViewById(R.id.base_note_content));
     }
 
     @Override
@@ -55,7 +62,13 @@ public abstract class BaseNoteFragment extends Fragment {
             mStateChangeListenerList.clear();
             mStateChangeListenerList = null;
         }
+        setState(State.FINISH);
         super.onDestroyView();
+    }
+
+    protected void prepareContentView(@NonNull BaseRecyclerView contentView) {
+        contentView.setLayoutManager(new LinearLayoutManager(getContext()));
+        contentView.setAdapter(new BaseRecyclerAdapter(getNoteSection()));
     }
 
     protected void setState(@NonNull State state) {
@@ -82,4 +95,6 @@ public abstract class BaseNoteFragment extends Fragment {
         }
         mStateChangeListenerList.add(listener);
     }
+
+    protected abstract BaseRecyclerSection getNoteSection();
 }

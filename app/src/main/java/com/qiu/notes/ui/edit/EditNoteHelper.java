@@ -1,4 +1,4 @@
-package com.qiu.notes.edit;
+package com.qiu.notes.ui.edit;
 
 public class EditNoteHelper {
 }

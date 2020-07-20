@@ -7,6 +7,11 @@
     <color name="transparent">#00000000</color>
     <color name="write">#FFFFFF</color>
 
+    <color name="black">#000000</color>
+    <color name="black_50">#222222</color>
+    <color name="black_100">#666666</color>
+    <color name="black_900">#AAAAAA</color>
+
     <color name="blue_50">#E3F2FD</color>
     <color name="blue_100">#BBDEFB</color>
     <color name="blue_200">#90CAF9</color>
