@@ -10,16 +10,19 @@ import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.ui.base.widget.TextNoteItem;
-import com.qiu.notes.ui.edit.EditNoteFragment;
 
-import java.util.Iterator;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class NoteListSection extends BaseRecyclerSection {
+
+    public static class RefreshNoteListEvent {
+    }
 
     private static class NoteListViewHolderFactory extends ViewHolderFactory {
 
@@ -31,15 +34,36 @@ public class NoteListSection extends BaseRecyclerSection {
         }
     }
 
-    public NoteListSection() {
-        prepareItems();
+    private class EventHandler {
+        @Subscribe
+        public void refreshList(RefreshNoteListEvent event) {
+            update();
+        }
     }
 
-    private void prepareItems() {
-        Iterator<TextContentEntry> iterator = InternalDataProvider.i().getNoteDataHolder()
-                .getNoteList().getIterator();
-        while (iterator.hasNext()) {
-            mListEntry.add(new TextNoteItem(iterator.next()));
+    private EventHandler mEventHandler = new EventHandler();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        EventDispatcher.register(mEventHandler);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventDispatcher.unregister(mEventHandler);
+
+    }
+
+    public void update() {
+        InternalDataProvider.i().getNoteDataHolder().queryAll(this::prepareItems);
+    }
+
+    private void prepareItems(@NonNull List<TextContentEntry> entryList) {
+        mListEntry.clear();
+        for (TextContentEntry entry : entryList) {
+            mListEntry.add(new TextNoteItem(entry));
         }
     }
 

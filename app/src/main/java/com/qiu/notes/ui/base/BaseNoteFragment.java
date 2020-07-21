@@ -52,7 +52,8 @@ public abstract class BaseNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        prepareContentView((BaseRecyclerView) view.findViewById(R.id.base_note_content));
+        prepareContentView(view.findViewById(R.id.base_note_content));
+        getNoteSection().onCreate();
     }
 
     @Override
@@ -62,6 +63,7 @@ public abstract class BaseNoteFragment extends Fragment {
             mStateChangeListenerList = null;
         }
         setState(State.FINISH);
+        getNoteSection().onDestroy();
         super.onDestroyView();
     }
 

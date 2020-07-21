@@ -1,6 +1,10 @@
 package com.qiu.notes.data;
 
+import android.content.ContentValues;
+import android.text.TextUtils;
+
 import com.qiu.base.lib.data.ListEntry;
+import com.qiu.base.lib.impl.Callback;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,10 +37,13 @@ public class NoteDataHolder {
         return mNoteListEntry;
     }
 
-    public void updateAll() {
+    public void queryAll(@NonNull Callback<List<TextContentEntry>> callback) {
         mNoteListEntry.clear();
-        mNoteListEntry.addAll(NoteDatabaseImpl.i().queryAll());
-        updateIdPool();
+        NoteDatabaseImpl.i().queryAll(entryList -> {
+            mNoteListEntry.addAll(entryList);
+            updateIdPool();
+            callback.onCall(entryList);
+        });
     }
 
     /**
@@ -46,6 +53,9 @@ public class NoteDataHolder {
      */
     @NonNull
     public TextContentEntry findEntryById(long noteId) {
+        if (noteId == CREATE_NEW_ENTRY_ID) {
+            return createNewEntry();
+        }
         Iterator<TextContentEntry> iterator = mNoteListEntry.getIterator();
         while (iterator.hasNext()) {
             final TextContentEntry entry = iterator.next();
@@ -73,21 +83,29 @@ public class NoteDataHolder {
         return newId;
     }
 
-    public void insert(@NonNull TextContentEntry entry) {
+    private void insert(@NonNull TextContentEntry entry) {
         NoteDatabaseImpl.i().insert(entry.getId(), entry.getCreatedTime(), entry.getUpdateTime(),
                 entry.getNote());
     }
 
-    public void delete(@NonNull TextContentEntry entry) {
+    public void update(@NonNull TextContentEntry entry) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteDatabaseImpl.DBEntry.CONTENT, entry.getNote());
+        contentValues.put(NoteDatabaseImpl.DBEntry.UPDATE_TIME, entry.getUpdateTime());
+        NoteDatabaseImpl.i().update(entry.getId(), contentValues);
+    }
 
+    public void delete(@NonNull TextContentEntry entry) {
+        NoteDatabaseImpl.i().delete(entry.getId());
     }
 
     @NonNull
-    public TextContentEntry createNewEntry() {
+    private TextContentEntry createNewEntry() {
         final TextContentEntry entry = new TextContentEntry();
         entry.setId(createNewId());
         entry.setCreatedTime(System.currentTimeMillis());
         entry.setUpdateTime(System.currentTimeMillis());
+        insert(entry);
         return entry;
     }
 

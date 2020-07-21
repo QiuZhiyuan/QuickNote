@@ -20,15 +20,14 @@ public class EditNoteFragment extends BaseNoteFragment {
 
     @NonNull
     private final TextContentEntry mEntry;
+    @NonNull
+    private final EditNoteSection mSection;
 
     private EditNoteFragment(long noteId) {
         TextContentEntry entry;
-        if (noteId != -1) {
-            entry = InternalDataProvider.i().getNoteDataHolder().findEntryById(noteId);
-        } else {
-            entry = InternalDataProvider.i().getNoteDataHolder().createNewEntry();
-        }
+        entry = InternalDataProvider.i().getNoteDataHolder().findEntryById(noteId);
         mEntry = entry;
+        mSection = new EditNoteSection(mEntry);
     }
 
     public static EditNoteFragment getInstance(long noteId) {
@@ -37,7 +36,7 @@ public class EditNoteFragment extends BaseNoteFragment {
 
     @Override
     protected BaseRecyclerSection getNoteSection() {
-        return new EditNoteSection(mEntry);
+        return mSection;
     }
 
     @Override

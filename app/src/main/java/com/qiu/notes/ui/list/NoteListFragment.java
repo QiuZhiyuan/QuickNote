@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class NoteListFragment extends BaseNoteFragment {
+
+    @NonNull
+    private final NoteListSection mSection = new NoteListSection();
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -19,7 +23,12 @@ public class NoteListFragment extends BaseNoteFragment {
 
     @Override
     protected BaseRecyclerSection getNoteSection() {
-        return new NoteListSection();
+        return mSection;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSection.update();
+    }
 }

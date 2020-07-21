@@ -9,8 +9,17 @@
     </style>
 
     <style name="ActionBarMenuIcon" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:contentDescription">@string/desc</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="BottomBarMenuIcon" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:padding">5dp</item>
         <item name="android:contentDescription">@string/desc</item>
         <item name="android:background">@color/transparent</item>
     </style>

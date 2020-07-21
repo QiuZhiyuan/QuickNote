@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.qiu.base.lib.data.ListEntry;
+import com.qiu.base.lib.impl.Callback;
+import com.qiu.base.lib.thread.ThreadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class NoteDatabaseImpl {
         return sInstance;
     }
 
-    private static class DBEntry {
+    public static class DBEntry {
         static final String DATABASE_NAME = "Quick_Note_DB.db";
         static final int VERSION = 1;
         static final String TABLE_NAME = "NoteTable";
@@ -109,25 +110,46 @@ public class NoteDatabaseImpl {
         long newRowId = db.insert(DBEntry.TABLE_NAME, null, values);
     }
 
-    @NonNull
-    public List<TextContentEntry> queryAll() {
-        final List<TextContentEntry> entryList = new ArrayList<>();
+    public void update(long id, @NonNull ContentValues contentValues) {
         if (mNoteSQLiteOpenHelper == null) {
-            return entryList;
+            return;
         }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
-        Cursor cursor = db.query(DBEntry.TABLE_NAME, DBEntry.getColumns(), null, null, null, null,
-                DBEntry.CREATE_TIME + " DESC");
-        while (cursor.moveToNext()) {
-            TextContentEntry entry = new TextContentEntry();
-            entry.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID)));
-            entry.setCreatedTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME)));
-            entry.setUpdateTime(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME)));
-            entry.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT)));
-            entryList.add(entry);
+        db.update(DBEntry.TABLE_NAME, contentValues, DBEntry.ID + "=" + id, null);
+    }
+
+    public void delete(long id) {
+        if (mNoteSQLiteOpenHelper == null) {
+            return;
         }
-        cursor.close();
-        return entryList;
+        final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
+        db.delete(DBEntry.TABLE_NAME, DBEntry.ID + "=" + id, null);
+    }
+
+    @NonNull
+    public void queryAll(@NonNull final Callback<List<TextContentEntry>> callback) {
+        if (mNoteSQLiteOpenHelper == null) {
+            callback.onCall(null);
+        }
+        final SQLiteDatabase db = mNoteSQLiteOpenHelper.getReadableDatabase();
+        final Cursor cursor =
+                db.query(DBEntry.TABLE_NAME, DBEntry.getColumns(), null, null, null, null,
+                        DBEntry.CREATE_TIME + " DESC");
+        ThreadUtils.i().postTask(() -> {
+            final List<TextContentEntry> entryList = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                TextContentEntry entry = new TextContentEntry();
+                entry.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID)));
+                entry.setCreatedTime(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME)));
+                entry.setUpdateTime(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME)));
+                entry.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT)));
+                entryList.add(entry);
+            }
+            cursor.close();
+            ThreadUtils.i().postMain(() -> callback.onCall(entryList));
+        });
     }
 
 }
