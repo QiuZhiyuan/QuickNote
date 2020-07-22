@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
+import com.qiu.notes.R;
 import com.qiu.notes.ui.base.BaseNoteFragment;
 import com.qiu.notes.ui.list.widget.NoteListSection;
 
@@ -16,9 +17,8 @@ public class NoteListFragment extends BaseNoteFragment {
     private final NoteListSection mSection = new NoteListSection();
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    protected void prepareViews(@NonNull View view) {
+        super.prepareViews(view);
     }
 
     @Override

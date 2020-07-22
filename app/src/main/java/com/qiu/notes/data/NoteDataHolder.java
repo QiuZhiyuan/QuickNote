@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.qiu.base.lib.data.ListEntry;
 import com.qiu.base.lib.impl.Callback;
+import com.qiu.base.lib.thread.ThreadUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,11 +39,15 @@ public class NoteDataHolder {
     }
 
     public void queryAll(@NonNull Callback<List<TextContentEntry>> callback) {
-        mNoteListEntry.clear();
-        NoteDatabaseImpl.i().queryAll(entryList -> {
-            mNoteListEntry.addAll(entryList);
-            updateIdPool();
-            callback.onCall(entryList);
+        ThreadUtils.i().postTask(() -> {
+            final List<TextContentEntry> entryList = NoteDatabaseImpl.i().queryAll();
+            ThreadUtils.i().postMain(() -> {
+                mNoteListEntry.clear();
+                mNoteListEntry.addAll(entryList);
+                updateIdPool();
+                callback.onCall(entryList);
+            });
+
         });
     }
 

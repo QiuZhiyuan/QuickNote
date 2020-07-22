@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
+import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
 import com.qiu.notes.ui.edit.widget.EditNoteSection;
@@ -30,6 +31,12 @@ public class EditNoteFragment extends BaseNoteFragment {
         mSection = new EditNoteSection(mEntry);
     }
 
+    @Override
+    protected void prepareViews(@NonNull View view) {
+        super.prepareViews(view);
+        view.findViewById(R.id.bottom_bar_container).setVisibility(View.GONE);
+    }
+
     public static EditNoteFragment getInstance(long noteId) {
         return new EditNoteFragment(noteId);
     }
@@ -37,11 +44,5 @@ public class EditNoteFragment extends BaseNoteFragment {
     @Override
     protected BaseRecyclerSection getNoteSection() {
         return mSection;
-    }
-
-    @Override
-    protected void prepareContentView(@NonNull BaseRecyclerView contentView) {
-        super.prepareContentView(contentView);
-        contentView.setBackgroundColor(Color.WHITE);
     }
 }

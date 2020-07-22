@@ -1,11 +1,13 @@
 package com.qiu.notes.ui.base;
 
 import android.graphics.Color;
+import android.icu.util.ValueIterator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -54,8 +56,7 @@ public abstract class BaseNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        prepareButtons(view);
-        prepareContentView(view.findViewById(R.id.base_note_content));
+        prepareViews(view);
         getNoteSection().onCreate();
     }
 
@@ -70,14 +71,19 @@ public abstract class BaseNoteFragment extends Fragment implements View.OnClickL
         super.onDestroyView();
     }
 
+    protected void prepareViews(@NonNull View view) {
+        prepareButtons(view);
+        prepareContentView(view);
+    }
+
     private void prepareButtons(@NonNull View view) {
         view.findViewById(R.id.btn_add_note).setOnClickListener(this);
-        view.findViewById(R.id.btn_delete_note).setOnClickListener(this);
         view.findViewById(R.id.btn_edit_undo).setOnClickListener(this);
         view.findViewById(R.id.btn_left_menu).setOnClickListener(this);
     }
 
-    protected void prepareContentView(@NonNull BaseRecyclerView contentView) {
+    private void prepareContentView(@NonNull View view) {
+        final BaseRecyclerView contentView = view.findViewById(R.id.base_note_content);
         contentView.setLayoutManager(new LinearLayoutManager(getContext()));
         contentView.setAdapter(new BaseRecyclerAdapter(getNoteSection()));
         final int paddingH = contentView.getContext().getResources()
@@ -117,7 +123,6 @@ public abstract class BaseNoteFragment extends Fragment implements View.OnClickL
             case R.id.btn_add_note:
                 EventDispatcher.post(new AddNewNoteEvent());
                 break;
-            case R.id.btn_delete_note:
             case R.id.btn_edit_undo:
             case R.id.btn_left_menu:
         }

@@ -5,11 +5,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
-import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.ui.base.widget.TextNoteItem;
 
 import androidx.annotation.NonNull;
@@ -60,7 +61,7 @@ public class EditTextNoteViewHolder extends BaseRecyclerViewHolder implements Te
         if (mEntry != null) {
             mEntry.setUpdateTime(System.currentTimeMillis());
             mEntry.setNote(s.toString());
-            InternalDataProvider.i().getNoteDataHolder().update(mEntry);
+            EventDispatcher.post(new UpdateTextNoteEvent(mEntry));
         }
     }
 }

@@ -2,16 +2,17 @@ package com.qiu.notes;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.qiu.base.lib.eventbus.EventDispatcher;
+import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.NoteDataHolder;
 import com.qiu.notes.event.AddNewNoteEvent;
 import com.qiu.notes.event.DeleteNoteEvent;
+import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.ui.base.BaseNoteActivity;
 import com.qiu.notes.ui.edit.EditNoteFragment;
@@ -36,7 +37,12 @@ public class MainActivity extends BaseNoteActivity {
 
         @Subscribe
         public void deleteNote(DeleteNoteEvent event) {
+            InternalDataProvider.i().getNoteDataHolder().delete(event.mEntry);
+        }
 
+        @Subscribe
+        public void updateTextNote(UpdateTextNoteEvent event) {
+            InternalDataProvider.i().getNoteDataHolder().update(event.mEntry);
         }
     }
 
@@ -58,16 +64,20 @@ public class MainActivity extends BaseNoteActivity {
 
     private void addFragmentToBackStack(@NonNull Fragment fragment) {
         final FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content, fragment).addToBackStack(null).commit();
+        fm.beginTransaction().replace(R.id.content, fragment)
+                .addToBackStack(fragment.getClass().getSimpleName()).commit();
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
                 finish();
+            } else {
+                getSupportFragmentManager().popBackStack();
+                return true;
             }
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
 }

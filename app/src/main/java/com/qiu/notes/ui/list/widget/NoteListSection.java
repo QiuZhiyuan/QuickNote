@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.qiu.base.lib.eventbus.EventDispatcher;
+import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
@@ -14,6 +15,7 @@ import com.qiu.notes.ui.base.widget.TextNoteItem;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -29,7 +31,7 @@ public class NoteListSection extends BaseRecyclerSection {
         @Nullable
         @Override
         public BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final View view = getLayoutById(parent, R.layout.note_list_item);
+            final View view = getLayoutById(parent, R.layout.item_note_list);
             return new NoteListItemViewHolder(view);
         }
     }
@@ -57,14 +59,18 @@ public class NoteListSection extends BaseRecyclerSection {
     }
 
     public void update() {
+        setState(State.LOADING);
         InternalDataProvider.i().getNoteDataHolder().queryAll(this::prepareItems);
     }
 
     private void prepareItems(@NonNull List<TextContentEntry> entryList) {
-        mListEntry.clear();
+        List<BaseRecyclerItem> itemList = new ArrayList<>();
         for (TextContentEntry entry : entryList) {
-            mListEntry.add(new TextNoteItem(entry));
+            itemList.add(new TextNoteItem(entry));
         }
+        mListEntry.clear();
+        mListEntry.addAll(itemList);
+        setState(State.FINISH);
     }
 
     @NonNull

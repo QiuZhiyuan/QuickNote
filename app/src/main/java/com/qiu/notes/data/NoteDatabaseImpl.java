@@ -10,6 +10,7 @@ import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.thread.ThreadUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -96,7 +97,7 @@ public class NoteDatabaseImpl {
                 new NoteSQLiteOpenHelper(context, DBEntry.DATABASE_NAME, null, DBEntry.VERSION);
     }
 
-    public void insert(long id, long createTime, long updateTime, @Nullable String content) {
+    void insert(long id, long createTime, long updateTime, @Nullable String content) {
         if (mNoteSQLiteOpenHelper == null) {
             return;
         }
@@ -106,11 +107,10 @@ public class NoteDatabaseImpl {
         values.put(DBEntry.CREATE_TIME, createTime);
         values.put(DBEntry.UPDATE_TIME, updateTime);
         values.put(DBEntry.CONTENT, content);
-
-        long newRowId = db.insert(DBEntry.TABLE_NAME, null, values);
+        db.insert(DBEntry.TABLE_NAME, null, values);
     }
 
-    public void update(long id, @NonNull ContentValues contentValues) {
+    void update(long id, @NonNull ContentValues contentValues) {
         if (mNoteSQLiteOpenHelper == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class NoteDatabaseImpl {
         db.update(DBEntry.TABLE_NAME, contentValues, DBEntry.ID + "=" + id, null);
     }
 
-    public void delete(long id) {
+    void delete(long id) {
         if (mNoteSQLiteOpenHelper == null) {
             return;
         }
@@ -127,29 +127,26 @@ public class NoteDatabaseImpl {
     }
 
     @NonNull
-    public void queryAll(@NonNull final Callback<List<TextContentEntry>> callback) {
+    List<TextContentEntry> queryAll() {
         if (mNoteSQLiteOpenHelper == null) {
-            callback.onCall(null);
+            return new ArrayList<>();
         }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getReadableDatabase();
         final Cursor cursor =
                 db.query(DBEntry.TABLE_NAME, DBEntry.getColumns(), null, null, null, null,
                         DBEntry.CREATE_TIME + " DESC");
-        ThreadUtils.i().postTask(() -> {
-            final List<TextContentEntry> entryList = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                TextContentEntry entry = new TextContentEntry();
-                entry.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID)));
-                entry.setCreatedTime(
-                        cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME)));
-                entry.setUpdateTime(
-                        cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME)));
-                entry.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT)));
-                entryList.add(entry);
-            }
-            cursor.close();
-            ThreadUtils.i().postMain(() -> callback.onCall(entryList));
-        });
+        final List<TextContentEntry> entryList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            TextContentEntry entry = new TextContentEntry();
+            entry.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID)));
+            entry.setCreatedTime(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME)));
+            entry.setUpdateTime(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME)));
+            entry.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT)));
+            entryList.add(entry);
+        }
+        cursor.close();
+        return entryList;
     }
-
 }

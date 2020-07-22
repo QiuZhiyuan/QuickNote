@@ -2,11 +2,13 @@ package com.qiu.notes.ui.edit.widget;
 
 import android.view.ViewGroup;
 
+import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.ui.base.widget.TextNoteItem;
 
 import androidx.annotation.NonNull;
@@ -21,7 +23,7 @@ public class EditNoteSection extends BaseRecyclerSection {
                 int viewType) {
 
             return new EditTextNoteViewHolder(
-                    getLayoutById(parent, R.layout.edit_text_note_item));
+                    getLayoutById(parent, R.layout.item_edit_text_note));
         }
     }
 
@@ -43,5 +45,11 @@ public class EditNoteSection extends BaseRecyclerSection {
     @Override
     protected ViewHolderFactory getViewHolderFactory() {
         return mNoteViewHolderFactory;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventDispatcher.post(new UpdateTextNoteEvent(mEntry));
     }
 }
