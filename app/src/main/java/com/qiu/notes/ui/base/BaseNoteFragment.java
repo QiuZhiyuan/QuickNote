@@ -11,15 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerAdapter;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.notes.R;
+import com.qiu.notes.event.AddNewNoteEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseNoteFragment extends Fragment {
+public abstract class BaseNoteFragment extends Fragment implements View.OnClickListener {
 
     public enum State {
         START,
@@ -52,6 +54,7 @@ public abstract class BaseNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        prepareButtons(view);
         prepareContentView(view.findViewById(R.id.base_note_content));
         getNoteSection().onCreate();
     }
@@ -65,6 +68,13 @@ public abstract class BaseNoteFragment extends Fragment {
         setState(State.FINISH);
         getNoteSection().onDestroy();
         super.onDestroyView();
+    }
+
+    private void prepareButtons(@NonNull View view) {
+        view.findViewById(R.id.btn_add_note).setOnClickListener(this);
+        view.findViewById(R.id.btn_delete_note).setOnClickListener(this);
+        view.findViewById(R.id.btn_edit_undo).setOnClickListener(this);
+        view.findViewById(R.id.btn_left_menu).setOnClickListener(this);
     }
 
     protected void prepareContentView(@NonNull BaseRecyclerView contentView) {
@@ -99,6 +109,18 @@ public abstract class BaseNoteFragment extends Fragment {
             mStateChangeListenerList = new ArrayList<>();
         }
         mStateChangeListenerList.add(listener);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_add_note:
+                EventDispatcher.post(new AddNewNoteEvent());
+                break;
+            case R.id.btn_delete_note:
+            case R.id.btn_edit_undo:
+            case R.id.btn_left_menu:
+        }
     }
 
     protected abstract BaseRecyclerSection getNoteSection();

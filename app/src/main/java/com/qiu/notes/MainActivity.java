@@ -19,7 +19,7 @@ import com.qiu.notes.ui.list.NoteListFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 
-public class MainActivity extends BaseNoteActivity implements View.OnClickListener {
+public class MainActivity extends BaseNoteActivity {
 
     private class EventHandler {
 
@@ -47,7 +47,6 @@ public class MainActivity extends BaseNoteActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         EventDispatcher.register(mEventHandler);
         EventDispatcher.post(new ShowFragmentEvent(new NoteListFragment()));
-        prepareButtons();
     }
 
     @Override
@@ -56,12 +55,6 @@ public class MainActivity extends BaseNoteActivity implements View.OnClickListen
         super.onDestroy();
     }
 
-    private void prepareButtons() {
-        findViewById(R.id.btn_add_note).setOnClickListener(this);
-        findViewById(R.id.btn_delete_note).setOnClickListener(this);
-        findViewById(R.id.btn_edit_undo).setOnClickListener(this);
-        findViewById(R.id.btn_left_menu).setOnClickListener(this);
-    }
 
     private void addFragmentToBackStack(@NonNull Fragment fragment) {
         final FragmentManager fm = getSupportFragmentManager();
@@ -76,17 +69,5 @@ public class MainActivity extends BaseNoteActivity implements View.OnClickListen
             }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_add_note:
-                EventDispatcher.post(new AddNewNoteEvent());
-                break;
-            case R.id.btn_delete_note:
-            case R.id.btn_edit_undo:
-            case R.id.btn_left_menu:
-        }
     }
 }
