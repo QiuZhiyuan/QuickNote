@@ -1,4 +1,4 @@
-package com.qiu.notes.ui.edit.widget;
+package com.qiu.notes.widget;
 
 import android.view.ViewGroup;
 
@@ -9,12 +9,12 @@ import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
 import com.qiu.notes.event.UpdateTextNoteEvent;
-import com.qiu.notes.ui.base.widget.TextNoteItem;
+import com.qiu.notes.widget.TextNoteItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class EditNoteSection extends BaseRecyclerSection {
+public class NoteDetailSection extends BaseRecyclerSection {
 
     private static class NoteViewHolderFactory extends ViewHolderFactory {
         @Nullable
@@ -22,7 +22,7 @@ public class EditNoteSection extends BaseRecyclerSection {
         public BaseRecyclerViewHolder createViewHolder(@NonNull ViewGroup parent,
                 int viewType) {
 
-            return new EditTextNoteViewHolder(
+            return new NoteDetailTextViewHolder(
                     getLayoutById(parent, R.layout.item_edit_text_note));
         }
     }
@@ -32,7 +32,7 @@ public class EditNoteSection extends BaseRecyclerSection {
     @NonNull
     private final TextContentEntry mEntry;
 
-    public EditNoteSection(@NonNull TextContentEntry entry) {
+    public NoteDetailSection(@NonNull TextContentEntry entry) {
         mEntry = entry;
         prepareItems();
     }

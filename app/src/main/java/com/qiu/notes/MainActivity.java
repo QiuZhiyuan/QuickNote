@@ -15,8 +15,8 @@ import com.qiu.notes.event.DeleteNoteEvent;
 import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.ui.base.BaseNoteActivity;
-import com.qiu.notes.ui.edit.EditNoteFragment;
-import com.qiu.notes.ui.list.NoteListFragment;
+import com.qiu.notes.ui.EditNoteFragment;
+import com.qiu.notes.ui.NoteListFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 

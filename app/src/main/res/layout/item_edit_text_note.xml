@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.qiu.notes.ui.base.widget.EditNoteView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qiu.notes.widget.base.NoteDetailView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/edit_text_note_view"
     android:layout_width="match_parent"
@@ -7,4 +7,4 @@
     android:background="@color/blue_100"
     android:gravity="top|start">
 
-</com.qiu.notes.ui.base.widget.EditNoteView>
+</com.qiu.notes.widget.base.NoteDetailView>

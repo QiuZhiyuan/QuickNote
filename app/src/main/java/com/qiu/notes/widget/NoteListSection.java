@@ -1,4 +1,4 @@
-package com.qiu.notes.ui.list.widget;
+package com.qiu.notes.widget;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,7 @@ import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.ui.base.widget.TextNoteItem;
+import com.qiu.notes.event.RefreshNoteListEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -22,9 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class NoteListSection extends BaseRecyclerSection {
-
-    public static class RefreshNoteListEvent {
-    }
 
     private static class NoteListViewHolderFactory extends ViewHolderFactory {
 

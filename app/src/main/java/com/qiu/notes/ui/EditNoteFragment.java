@@ -1,19 +1,15 @@
-package com.qiu.notes.ui.edit;
+package com.qiu.notes.ui;
 
-import android.graphics.Color;
-import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
-import com.qiu.base.lib.widget.recycler.BaseRecyclerView;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.ui.edit.widget.EditNoteSection;
 import com.qiu.notes.ui.base.BaseNoteFragment;
+import com.qiu.notes.widget.NoteDetailSection;
 
 public class EditNoteFragment extends BaseNoteFragment {
 
@@ -22,13 +18,13 @@ public class EditNoteFragment extends BaseNoteFragment {
     @NonNull
     private final TextContentEntry mEntry;
     @NonNull
-    private final EditNoteSection mSection;
+    private final NoteDetailSection mSection;
 
     private EditNoteFragment(long noteId) {
         TextContentEntry entry;
         entry = InternalDataProvider.i().getNoteDataHolder().findEntryById(noteId);
         mEntry = entry;
-        mSection = new EditNoteSection(mEntry);
+        mSection = new NoteDetailSection(mEntry);
     }
 
     @Override

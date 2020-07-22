@@ -1,4 +1,4 @@
-package com.qiu.notes.ui.base.widget;
+package com.qiu.notes.widget;
 
 import com.qiu.base.lib.tools.UniqueId;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;

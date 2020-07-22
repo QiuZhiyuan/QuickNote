@@ -1,15 +1,12 @@
-package com.qiu.notes.ui.list;
+package com.qiu.notes.ui;
 
-import android.os.Bundle;
 import android.view.View;
 
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
-import com.qiu.notes.R;
 import com.qiu.notes.ui.base.BaseNoteFragment;
-import com.qiu.notes.ui.list.widget.NoteListSection;
+import com.qiu.notes.widget.NoteListSection;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class NoteListFragment extends BaseNoteFragment {
 

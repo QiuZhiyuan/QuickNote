@@ -1,4 +1,4 @@
-package com.qiu.notes.ui.edit.widget;
+package com.qiu.notes.widget;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,19 +11,19 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
 import com.qiu.notes.event.UpdateTextNoteEvent;
-import com.qiu.notes.ui.base.widget.TextNoteItem;
+import com.qiu.notes.widget.TextNoteItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class EditTextNoteViewHolder extends BaseRecyclerViewHolder implements TextWatcher {
+public class NoteDetailTextViewHolder extends BaseRecyclerViewHolder implements TextWatcher {
 
     @NonNull
     private final EditText mEditText;
     @Nullable
     private TextContentEntry mEntry;
 
-    public EditTextNoteViewHolder(@NonNull View itemView) {
+    public NoteDetailTextViewHolder(@NonNull View itemView) {
         super(itemView);
         mEditText = itemView.findViewById(R.id.edit_text_note_view);
         mEditText.addTextChangedListener(this);
