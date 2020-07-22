@@ -9,9 +9,9 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
 import com.qiu.notes.event.DeleteNoteEvent;
-import com.qiu.notes.event.RefreshNoteListEvent;
+import com.qiu.notes.event.RefreshNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
-import com.qiu.notes.widget.TextNoteItem;
+import com.qiu.notes.widget.base.TextNoteItem;
 import com.qiu.notes.ui.EditNoteFragment;
 import com.qiu.notes.utils.Tools;
 
@@ -31,7 +31,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
 
     public NoteListItemViewHolder(@NonNull View itemView) {
         super(itemView);
-        mNoteTime = itemView.findViewById(R.id.note_time);
+        mNoteTime = itemView.findViewById(R.id.update_time);
         mNoteContent = itemView.findViewById(R.id.note_content);
     }
 
@@ -72,7 +72,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
                 (dialog, which) -> dialog.dismiss()).setPositiveButton("是", (dialog, which) -> {
             if (mEntry != null) {
                 EventDispatcher.post(new DeleteNoteEvent(mEntry));
-                EventDispatcher.post(new RefreshNoteListEvent());
+                EventDispatcher.post(new RefreshNoteEvent());
             }
             dialog.dismiss();
         }).create().show();

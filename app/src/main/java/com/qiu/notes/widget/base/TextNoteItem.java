@@ -1,6 +1,5 @@
-package com.qiu.notes.widget;
+package com.qiu.notes.widget.base;
 
-import com.qiu.base.lib.tools.UniqueId;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.notes.data.TextContentEntry;
 
@@ -8,12 +7,13 @@ import androidx.annotation.NonNull;
 
 public class TextNoteItem extends BaseRecyclerItem {
 
-    private static final int mId = UniqueId.get();
+    private final int mId;
 
     @NonNull
     private final TextContentEntry mEntry;
 
-    public TextNoteItem(@NonNull TextContentEntry entry) {
+    public TextNoteItem(int id, @NonNull TextContentEntry entry) {
+        mId = id;
         mEntry = entry;
     }
 

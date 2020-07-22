@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/note_detail_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/update_time"
+        style="@style/NoteTimeDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="2020.07.01 12:41:53" />
+
+    <com.qiu.notes.widget.base.NoteDetailView
+        android:id="@+id/edit_text_note_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:gravity="top|start">
+
+    </com.qiu.notes.widget.base.NoteDetailView>
+</LinearLayout>

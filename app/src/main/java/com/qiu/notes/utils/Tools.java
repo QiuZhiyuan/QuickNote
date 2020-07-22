@@ -11,6 +11,6 @@ public class Tools {
     }
 
     public static String getDateString(long time) {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(new Date(time));
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(time));
     }
 }
