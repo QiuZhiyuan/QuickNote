@@ -8,15 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.qiu.base.lib.eventbus.EventDispatcher;
-import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.NoteDataHolder;
 import com.qiu.notes.event.AddNewNoteEvent;
-import com.qiu.notes.event.DeleteNoteEvent;
-import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
-import com.qiu.notes.ui.base.BaseNoteActivity;
-import com.qiu.notes.ui.EditNoteFragment;
-import com.qiu.notes.ui.NoteListFragment;
+import com.qiu.notes.page.base.BaseNoteActivity;
+import com.qiu.notes.page.NoteDetailFragment;
+import com.qiu.notes.page.NoteListFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -32,17 +29,7 @@ public class MainActivity extends BaseNoteActivity {
         @Subscribe
         public void addNewNote(AddNewNoteEvent event) {
             addFragmentToBackStack(
-                    EditNoteFragment.getInstance(NoteDataHolder.CREATE_NEW_ENTRY_ID));
-        }
-
-        @Subscribe
-        public void deleteNote(DeleteNoteEvent event) {
-            InternalDataProvider.i().getNoteDataHolder().delete(event.mEntry);
-        }
-
-        @Subscribe
-        public void updateTextNote(UpdateTextNoteEvent event) {
-            InternalDataProvider.i().getNoteDataHolder().update(event.mEntry);
+                    NoteDetailFragment.getInstance(NoteDataHolder.CREATE_NEW_ENTRY_ID));
         }
     }
 

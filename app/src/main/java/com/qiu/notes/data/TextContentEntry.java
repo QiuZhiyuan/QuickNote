@@ -10,6 +10,8 @@ public class TextContentEntry {
 
     private long mUpdateTime;
 
+    private boolean mIsChanged = false;
+
     @Nullable
     private String mNote;
 
@@ -38,6 +40,7 @@ public class TextContentEntry {
     }
 
     public void setNote(@Nullable String note) {
+        mIsChanged = true;
         mNote = note;
     }
 
@@ -46,7 +49,16 @@ public class TextContentEntry {
         return mNote;
     }
 
-    public void save() {
+    public boolean isChanged() {
+        return mIsChanged;
+    }
 
+    public void save() {
+        InternalDataProvider.i().getNoteDataHolder().update(this);
+        mIsChanged = false;
+    }
+
+    public void delete() {
+        InternalDataProvider.i().getNoteDataHolder().delete(this);
     }
 }

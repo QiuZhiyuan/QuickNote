@@ -1,6 +1,5 @@
-package com.qiu.notes.ui.base;
+package com.qiu.notes.page.base;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;

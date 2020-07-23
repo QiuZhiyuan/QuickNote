@@ -1,37 +1,59 @@
 package com.qiu.notes.widget;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.event.UpdateTextNoteEvent;
+import com.qiu.notes.setting.Config;
+import com.qiu.notes.utils.simple.SimpleTextWatcher;
 import com.qiu.notes.utils.Tools;
 import com.qiu.notes.widget.base.TextNoteItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder implements TextWatcher {
+public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
 
     @NonNull
     private final EditText mEditText;
     @NonNull
     private final TextView mUpdateTime;
+    @NonNull
+    private final Runnable mSaveNoteTask = new Runnable() {
+        @Override
+        public void run() {
+            if (mEntry != null && mEditText.getText() != null) {
+                mEntry.setUpdateTime(System.currentTimeMillis());
+                mEntry.save();
+                updateTime();
+            }
+        }
+    };
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     @Nullable
     private TextContentEntry mEntry;
 
     public NoteDetailItemViewHolder(@NonNull View itemView) {
         super(itemView);
-        mEditText = itemView.findViewById(R.id.edit_text_note_view);
-        mEditText.addTextChangedListener(this);
         mUpdateTime = itemView.findViewById(R.id.update_time);
+        mEditText = itemView.findViewById(R.id.edit_text_note_view);
+        final SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                mEntry.setNote(mEditText.getText().toString());
+                mHandler.removeCallbacks(mSaveNoteTask);
+                mHandler.postDelayed(mSaveNoteTask, Config.EDIT_SAVE_DURATION);
+            }
+        };
+        mEditText.addTextChangedListener(textWatcher);
     }
 
     @Override
@@ -57,25 +79,5 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder implements 
     @Override
     public void unBindItem() {
         mEntry = null;
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (mEntry != null) {
-            mEntry.setUpdateTime(System.currentTimeMillis());
-            mEntry.setNote(s.toString());
-            EventDispatcher.post(new UpdateTextNoteEvent(mEntry));
-            updateTime();
-        }
     }
 }
