@@ -49,7 +49,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder implements 
 
     private void updateTime() {
         if (mEntry != null) {
-            mUpdateTime.setText(getResource()
+            mUpdateTime.setText(getResources()
                     .getString(R.string.update_time, Tools.getDateString(mEntry.getUpdateTime())));
         }
     }

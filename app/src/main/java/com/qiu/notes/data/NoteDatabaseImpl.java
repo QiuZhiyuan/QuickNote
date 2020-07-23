@@ -6,11 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.qiu.base.lib.impl.Callback;
-import com.qiu.base.lib.thread.ThreadUtils;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.NonNull;

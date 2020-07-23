@@ -1,7 +1,6 @@
 package com.qiu.notes.data;
 
 import android.content.ContentValues;
-import android.text.TextUtils;
 
 import com.qiu.base.lib.data.ListEntry;
 import com.qiu.base.lib.impl.Callback;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class NoteDataHolder {
 
