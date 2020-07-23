@@ -1,9 +1,9 @@
-package com.qiu.notes.ui;
+package com.qiu.notes.page;
 
 import android.view.View;
 
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
-import com.qiu.notes.ui.base.BaseNoteFragment;
+import com.qiu.notes.page.base.BaseNoteFragment;
 import com.qiu.notes.widget.NoteListSection;
 
 import androidx.annotation.NonNull;

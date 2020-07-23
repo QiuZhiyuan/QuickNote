@@ -1,4 +1,4 @@
-package com.qiu.notes.ui.base;
+package com.qiu.notes.page.base;
 
 import android.os.Bundle;
 

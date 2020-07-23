@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.edit.EditNoteActivity">
+        <activity android:name=".page.edit.EditNoteActivity">
 
         </activity>
     </application>

@@ -1,4 +1,4 @@
-package com.qiu.notes.ui;
+package com.qiu.notes.page;
 
 import android.view.View;
 
@@ -8,10 +8,10 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.ui.base.BaseNoteFragment;
+import com.qiu.notes.page.base.BaseNoteFragment;
 import com.qiu.notes.widget.NoteDetailSection;
 
-public class EditNoteFragment extends BaseNoteFragment {
+public class NoteDetailFragment extends BaseNoteFragment {
 
     private static final String KEY_NOTE_ID = "note_id";
 
@@ -20,7 +20,7 @@ public class EditNoteFragment extends BaseNoteFragment {
     @NonNull
     private final NoteDetailSection mSection;
 
-    private EditNoteFragment(long noteId) {
+    private NoteDetailFragment(long noteId) {
         TextContentEntry entry;
         entry = InternalDataProvider.i().getNoteDataHolder().findEntryById(noteId);
         mEntry = entry;
@@ -33,8 +33,8 @@ public class EditNoteFragment extends BaseNoteFragment {
         view.findViewById(R.id.bottom_bar_container).setVisibility(View.GONE);
     }
 
-    public static EditNoteFragment getInstance(long noteId) {
-        return new EditNoteFragment(noteId);
+    public static NoteDetailFragment getInstance(long noteId) {
+        return new NoteDetailFragment(noteId);
     }
 
     @Override

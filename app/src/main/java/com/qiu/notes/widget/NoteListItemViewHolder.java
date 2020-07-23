@@ -8,11 +8,10 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.event.DeleteNoteEvent;
 import com.qiu.notes.event.RefreshNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.widget.base.TextNoteItem;
-import com.qiu.notes.ui.EditNoteFragment;
+import com.qiu.notes.page.NoteDetailFragment;
 import com.qiu.notes.utils.Tools;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,6 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
             mEntry = ((TextNoteItem) item).getEntry();
             mNoteTime.setText(Tools.getDateString(mEntry.getUpdateTime()));
             mNoteContent.setText(mEntry.getNote());
-
         }
 
     }
@@ -57,7 +55,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
     public void onClick(View v) {
         if (mEntry != null) {
             EventDispatcher.post(new ShowFragmentEvent(
-                    EditNoteFragment.getInstance(mEntry.getId())));
+                    NoteDetailFragment.getInstance(mEntry.getId())));
         }
     }
 
@@ -71,7 +69,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
         new AlertDialog.Builder(itemView.getContext()).setMessage("是否删除?").setNegativeButton("否",
                 (dialog, which) -> dialog.dismiss()).setPositiveButton("是", (dialog, which) -> {
             if (mEntry != null) {
-                EventDispatcher.post(new DeleteNoteEvent(mEntry));
+                mEntry.delete();
                 EventDispatcher.post(new RefreshNoteEvent());
             }
             dialog.dismiss();

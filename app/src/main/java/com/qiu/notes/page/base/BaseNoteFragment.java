@@ -1,13 +1,11 @@
-package com.qiu.notes.ui.base;
+package com.qiu.notes.page.base;
 
 import android.graphics.Color;
-import android.icu.util.ValueIterator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

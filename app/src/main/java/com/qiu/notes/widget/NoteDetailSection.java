@@ -2,14 +2,12 @@ package com.qiu.notes.widget;
 
 import android.view.ViewGroup;
 
-import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.tools.UniqueId;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.event.UpdateTextNoteEvent;
 import com.qiu.notes.widget.base.TextNoteItem;
 
 import androidx.annotation.NonNull;
@@ -66,6 +64,8 @@ public class NoteDetailSection extends BaseRecyclerSection {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventDispatcher.post(new UpdateTextNoteEvent(mEntry));
+        if (mEntry.isChanged()) {
+            mEntry.save();
+        }
     }
 }

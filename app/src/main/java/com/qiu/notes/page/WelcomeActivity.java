@@ -1,4 +1,4 @@
-package com.qiu.notes.ui;
+package com.qiu.notes.page;
 
 public class WelcomeActivity {
 }
