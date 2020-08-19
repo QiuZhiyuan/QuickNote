@@ -32,14 +32,7 @@ public class NoteDataHolder {
     @NonNull
     private ListEntry<TextContentEntry> mNoteListEntry = new ListEntry<>();
     @NonNull
-    private List<NoteDataChangeListener> mListenerList = new ArrayList<>();
     private Set<Long> mIdPool = new HashSet<>();
-
-    @NonNull
-    public ListEntry<TextContentEntry> getNoteList() {
-        return mNoteListEntry;
-    }
-
     @NonNull
     private NoteDatabaseImpl mNoteDatabase;
 
