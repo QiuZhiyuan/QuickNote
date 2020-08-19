@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 
 public class NoteDatabaseImpl {
 
-    private static NoteDatabaseImpl sInstance;
-
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DBEntry.TABLE_NAME
                     + " ("
@@ -26,17 +24,6 @@ public class NoteDatabaseImpl {
                     + ")";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DBEntry.TABLE_NAME;
-
-    public static NoteDatabaseImpl i() {
-        if (sInstance == null) {
-            synchronized (NoteDatabaseImpl.class) {
-                if (sInstance == null) {
-                    sInstance = new NoteDatabaseImpl();
-                }
-            }
-        }
-        return sInstance;
-    }
 
     public static class DBEntry {
         static final String DATABASE_NAME = "Quick_Note_DB.db";
@@ -82,21 +69,15 @@ public class NoteDatabaseImpl {
         }
     }
 
-    @Nullable
+    @NonNull
     private NoteSQLiteOpenHelper mNoteSQLiteOpenHelper;
 
-    private NoteDatabaseImpl() {
-    }
-
-    public void init(@NonNull Context context) {
+    public NoteDatabaseImpl(@NonNull Context context) {
         mNoteSQLiteOpenHelper =
                 new NoteSQLiteOpenHelper(context, DBEntry.DATABASE_NAME, null, DBEntry.VERSION);
     }
 
     void insert(long id, long createTime, long updateTime, @Nullable String content) {
-        if (mNoteSQLiteOpenHelper == null) {
-            return;
-        }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
         final ContentValues values = new ContentValues();
         values.put(DBEntry.ID, id);
@@ -107,26 +88,17 @@ public class NoteDatabaseImpl {
     }
 
     void update(long id, @NonNull ContentValues contentValues) {
-        if (mNoteSQLiteOpenHelper == null) {
-            return;
-        }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
         db.update(DBEntry.TABLE_NAME, contentValues, DBEntry.ID + "=" + id, null);
     }
 
     void delete(long id) {
-        if (mNoteSQLiteOpenHelper == null) {
-            return;
-        }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
         db.delete(DBEntry.TABLE_NAME, DBEntry.ID + "=" + id, null);
     }
 
     @NonNull
     List<TextContentEntry> queryAll() {
-        if (mNoteSQLiteOpenHelper == null) {
-            return new ArrayList<>();
-        }
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getReadableDatabase();
         final Cursor cursor =
                 db.query(DBEntry.TABLE_NAME, DBEntry.getColumns(), null, null, null, null,

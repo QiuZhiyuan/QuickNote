@@ -10,6 +10,5 @@ public class NoteApplication extends Application {
     public void onCreate() {
         super.onCreate();
         App.i().init(this);
-        NoteDatabaseImpl.i().init(this);
     }
 }
