@@ -1,10 +1,12 @@
 package com.qiu.notes.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 
 import com.qiu.base.lib.data.ListEntry;
 import com.qiu.base.lib.impl.Callback;
 import com.qiu.base.lib.thread.ThreadUtils;
+import com.qiu.notes.utils.App;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,9 +40,16 @@ public class NoteDataHolder {
         return mNoteListEntry;
     }
 
+    @NonNull
+    private NoteDatabaseImpl mNoteDatabase;
+
+    public NoteDataHolder() {
+        mNoteDatabase = new NoteDatabaseImpl(App.i().getApplicationContext());
+    }
+
     public void queryAll(@NonNull Callback<List<TextContentEntry>> callback) {
         ThreadUtils.i().postTask(() -> {
-            final List<TextContentEntry> entryList = NoteDatabaseImpl.i().queryAll();
+            final List<TextContentEntry> entryList = mNoteDatabase.queryAll();
             ThreadUtils.i().postMain(() -> {
                 mNoteListEntry.clear();
                 mNoteListEntry.addAll(entryList);
@@ -53,6 +62,7 @@ public class NoteDataHolder {
 
     /**
      * find TextContentEntry by id in note list or create new one when can't find
+     *
      * @param noteId
      * @return
      */
@@ -89,7 +99,7 @@ public class NoteDataHolder {
     }
 
     private void insert(@NonNull TextContentEntry entry) {
-        NoteDatabaseImpl.i().insert(entry.getId(), entry.getCreatedTime(), entry.getUpdateTime(),
+        mNoteDatabase.insert(entry.getId(), entry.getCreatedTime(), entry.getUpdateTime(),
                 entry.getNote());
     }
 
@@ -97,11 +107,11 @@ public class NoteDataHolder {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDatabaseImpl.DBEntry.CONTENT, entry.getNote());
         contentValues.put(NoteDatabaseImpl.DBEntry.UPDATE_TIME, entry.getUpdateTime());
-        NoteDatabaseImpl.i().update(entry.getId(), contentValues);
+        mNoteDatabase.update(entry.getId(), contentValues);
     }
 
     public void delete(@NonNull TextContentEntry entry) {
-        NoteDatabaseImpl.i().delete(entry.getId());
+        mNoteDatabase.delete(entry.getId());
     }
 
     @NonNull
