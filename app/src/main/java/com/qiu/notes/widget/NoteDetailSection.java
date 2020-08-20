@@ -63,9 +63,11 @@ public class NoteDetailSection extends BaseRecyclerSection {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        if (mEntry.isChanged()) {
+        if (mEntry.isEmpty()) {
+            mEntry.delete();
+        } else if (mEntry.isChanged()) {
             mEntry.save();
         }
+        super.onDestroy();
     }
 }
