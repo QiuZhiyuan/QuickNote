@@ -20,7 +20,8 @@ public class NoteDatabaseImpl {
                     + DBEntry.ID + " INTEGER PRIMARY KEY,"
                     + DBEntry.CREATE_TIME + " INTEGER,"
                     + DBEntry.UPDATE_TIME + " INTEGER,"
-                    + DBEntry.CONTENT + " TEXT"
+                    + DBEntry.CONTENT + " TEXT,"
+                    + DBEntry.TITLE + " TEXT"
                     + ")";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DBEntry.TABLE_NAME;
@@ -32,6 +33,7 @@ public class NoteDatabaseImpl {
         static final String ID = "id";
         static final String CREATE_TIME = "create_time";
         static final String UPDATE_TIME = "update_time";
+        static final String TITLE = "title";
         static final String CONTENT = "content";
 
         private DBEntry() {
@@ -39,7 +41,7 @@ public class NoteDatabaseImpl {
 
         static String[] getColumns() {
             return new String[]{
-                    ID, CREATE_TIME, UPDATE_TIME, CONTENT
+                    ID, CREATE_TIME, UPDATE_TIME, TITLE, CONTENT
             };
         }
     }
@@ -76,12 +78,14 @@ public class NoteDatabaseImpl {
                 new NoteSQLiteOpenHelper(context, DBEntry.DATABASE_NAME, null, DBEntry.VERSION);
     }
 
-    void insert(long id, long createTime, long updateTime, @Nullable String content) {
+    void insert(long id, long createTime, long updateTime, @Nullable String title,
+            @Nullable String content) {
         final SQLiteDatabase db = mNoteSQLiteOpenHelper.getWritableDatabase();
         final ContentValues values = new ContentValues();
         values.put(DBEntry.ID, id);
         values.put(DBEntry.CREATE_TIME, createTime);
         values.put(DBEntry.UPDATE_TIME, updateTime);
+        values.put(DBEntry.TITLE, title);
         values.put(DBEntry.CONTENT, content);
         db.insert(DBEntry.TABLE_NAME, null, values);
     }
@@ -109,8 +113,10 @@ public class NoteDatabaseImpl {
                     cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME));
             final long updateTime =
                     cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME));
+            final String title = cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.TITLE));
             final String content = cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT));
-            TextContentEntry entry = new TextContentEntry(id, createTime, updateTime, content);
+            TextContentEntry entry =
+                    new TextContentEntry(id, createTime, updateTime, title, content);
             entryList.add(entry);
         }
         cursor.close();

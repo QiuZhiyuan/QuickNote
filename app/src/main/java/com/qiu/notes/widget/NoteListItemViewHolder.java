@@ -24,6 +24,8 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
     @NonNull
     private final TextView mNoteTime;
     @NonNull
+    private final TextView mNoteTitle;
+    @NonNull
     private final TextView mNoteContent;
     @Nullable
     private TextContentEntry mEntry;
@@ -32,6 +34,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
         super(itemView);
         mNoteTime = itemView.findViewById(R.id.update_time);
         mNoteContent = itemView.findViewById(R.id.note_content);
+        mNoteTitle = itemView.findViewById(R.id.note_title);
     }
 
     @Override
@@ -41,6 +44,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
             itemView.setOnLongClickListener(this);
             mEntry = ((TextNoteItem) item).mEntry;
             mNoteTime.setText(Tools.getDateString(mEntry.getUpdateTime()));
+            mNoteTitle.setText(mEntry.getTitle());
             mNoteContent.setText(mEntry.getNote());
         }
 

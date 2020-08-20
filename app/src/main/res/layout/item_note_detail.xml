@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.qiu.notes.widget.base.NoteDetailView
+        android:id="@+id/edit_text_note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:lines="1"
+        android:maxLines="1"
+        android:background="@color/write"
+        android:textSize="16sp"
+        android:textColor="@color/black_50"
+        tools:text="HelloWorld"/>
+
     <TextView
         android:id="@+id/update_time"
         style="@style/NoteTimeDetailText"
@@ -14,12 +26,14 @@
         tools:text="2020.07.01 12:41:53" />
 
     <com.qiu.notes.widget.base.NoteDetailView
-        android:id="@+id/edit_text_note_view"
+        android:id="@+id/edit_text_note_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:background="@color/write"
-        android:gravity="top|start">
+        android:gravity="top|start"
+        android:textSize="14sp"
+        android:textColor="@color/black_50">
 
     </com.qiu.notes.widget.base.NoteDetailView>
 </LinearLayout>
