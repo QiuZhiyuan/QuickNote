@@ -109,10 +109,10 @@ public class NoteDataHolder {
 
     @NonNull
     private TextContentEntry createNewEntry() {
-        final TextContentEntry entry = new TextContentEntry();
-        entry.setId(createNewId());
-        entry.setCreatedTime(System.currentTimeMillis());
-        entry.setUpdateTime(System.currentTimeMillis());
+        final long id = createNewId();
+        final long createTime = System.currentTimeMillis();
+        final long updateTime = System.currentTimeMillis();
+        final TextContentEntry entry = new TextContentEntry(id, createTime, updateTime, null);
         insert(entry);
         return entry;
     }

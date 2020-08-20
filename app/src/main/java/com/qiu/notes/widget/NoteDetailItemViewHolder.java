@@ -29,7 +29,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
     private final Runnable mSaveNoteTask = new Runnable() {
         @Override
         public void run() {
-            if (mEntry != null && mEditText.getText() != null) {
+            if (mEntry != null && mEntry.isChanged()) {
                 mEntry.setUpdateTime(System.currentTimeMillis());
                 mEntry.save();
                 updateTime();

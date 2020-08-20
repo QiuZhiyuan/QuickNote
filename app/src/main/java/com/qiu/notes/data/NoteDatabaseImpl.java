@@ -105,13 +105,13 @@ public class NoteDatabaseImpl {
                         DBEntry.CREATE_TIME + " DESC");
         final List<TextContentEntry> entryList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            TextContentEntry entry = new TextContentEntry();
-            entry.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID)));
-            entry.setCreatedTime(
-                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME)));
-            entry.setUpdateTime(
-                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME)));
-            entry.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT)));
+            final long id = cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.ID));
+            final long createTime =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.CREATE_TIME));
+            final long updateTime =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(DBEntry.UPDATE_TIME));
+            final String content = cursor.getString(cursor.getColumnIndexOrThrow(DBEntry.CONTENT));
+            TextContentEntry entry = new TextContentEntry(id, createTime, updateTime, content);
             entryList.add(entry);
         }
         cursor.close();

@@ -1,34 +1,34 @@
 package com.qiu.notes.data;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 
 public class TextContentEntry {
 
-    private long id;
-
-    private long mCreatedTime;
-
+    private final long mId;
+    private final long mCreatedTime;
     private long mUpdateTime;
-
-    private boolean mIsChanged = false;
+    private boolean mIsChanged;
 
     @Nullable
     private String mNote;
 
-    public long getId() {
-        return id;
+    public TextContentEntry(long id, long createdTime, long updateTime,
+            @Nullable String note) {
+        this.mId = id;
+        mCreatedTime = createdTime;
+        mUpdateTime = updateTime;
+        mIsChanged = false;
+        mNote = note;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public long getId() {
+        return mId;
     }
 
     public long getCreatedTime() {
         return mCreatedTime;
-    }
-
-    public void setCreatedTime(long createdTime) {
-        mCreatedTime = createdTime;
     }
 
     public long getUpdateTime() {
@@ -40,8 +40,10 @@ public class TextContentEntry {
     }
 
     public void setNote(@Nullable String note) {
-        mIsChanged = true;
-        mNote = note;
+        mIsChanged = !TextUtils.equals(note, mNote);
+        if (mIsChanged) {
+            mNote = note;
+        }
     }
 
     @Nullable
@@ -60,5 +62,9 @@ public class TextContentEntry {
 
     public void delete() {
         InternalDataProvider.i().getNoteDataHolder().delete(this);
+    }
+
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(mNote);
     }
 }
