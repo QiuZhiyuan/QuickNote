@@ -2,6 +2,7 @@ package com.qiu.notes.widget;
 
 import android.view.ViewGroup;
 
+import com.qiu.base.lib.thread.ThreadUtils;
 import com.qiu.base.lib.tools.UniqueId;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
@@ -32,17 +33,29 @@ public class NoteDetailSection extends BaseRecyclerSection {
     }
 
     @NonNull
+    private final Runnable mSaveNoteTask = new Runnable() {
+        @Override
+        public void run() {
+            if (mItem.mEntry.isChanged()) {
+                mItem.mEntry.setUpdateTime(System.currentTimeMillis());
+                mItem.onDataUpdate();
+                mItem.mEntry.save();
+            }
+        }
+    };
+
+    @NonNull
     private NoteViewHolderFactory mNoteViewHolderFactory = new NoteViewHolderFactory();
     @NonNull
-    private final TextContentEntry mEntry;
+    private final TextNoteItem mItem;
 
     public NoteDetailSection(@NonNull TextContentEntry entry) {
-        mEntry = entry;
+        mItem = new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry);
         prepareItems();
     }
 
     private void prepareItems() {
-        mListEntry.add(new TextNoteItem(ID_NOTE_DETAIL_ITEM, mEntry));
+        mListEntry.add(mItem);
     }
 
     @NonNull
@@ -50,24 +63,16 @@ public class NoteDetailSection extends BaseRecyclerSection {
     protected ViewHolderFactory getViewHolderFactory() {
         return mNoteViewHolderFactory;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
+    
     @Override
     public void onPause() {
+        ThreadUtils.i().postMain(mSaveNoteTask);
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        if (mEntry.isEmpty()) {
-            mEntry.delete();
-        } else if (mEntry.isChanged()) {
-            mEntry.save();
-        }
+        ThreadUtils.i().postMain(mSaveNoteTask);
         super.onDestroy();
     }
 }

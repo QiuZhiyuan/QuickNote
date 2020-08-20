@@ -51,7 +51,6 @@ public class NoteDatabaseImpl {
             super(context, name, factory, version);
         }
 
-
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(SQL_CREATE_ENTRIES);

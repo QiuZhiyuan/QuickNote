@@ -39,7 +39,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
         if (item instanceof TextNoteItem) {
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            mEntry = ((TextNoteItem) item).getEntry();
+            mEntry = ((TextNoteItem) item).mEntry;
             mNoteTime.setText(Tools.getDateString(mEntry.getUpdateTime()));
             mNoteContent.setText(mEntry.getNote());
         }
