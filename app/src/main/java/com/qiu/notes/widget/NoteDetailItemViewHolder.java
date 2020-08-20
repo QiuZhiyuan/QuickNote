@@ -1,7 +1,5 @@
 package com.qiu.notes.widget;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +9,6 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.TextContentEntry;
-import com.qiu.notes.setting.Config;
 import com.qiu.notes.utils.simple.SimpleTextWatcher;
 import com.qiu.notes.utils.Tools;
 import com.qiu.notes.widget.base.TextNoteItem;
@@ -25,21 +22,6 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
     private final EditText mEditText;
     @NonNull
     private final TextView mUpdateTime;
-    @NonNull
-    private final Runnable mSaveNoteTask = new Runnable() {
-        @Override
-        public void run() {
-            if (mEntry != null && mEntry.isChanged()) {
-                mEntry.setUpdateTime(System.currentTimeMillis());
-                mEntry.save();
-                updateTime();
-            }
-        }
-    };
-    @NonNull
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
-    @Nullable
-    private TextContentEntry mEntry;
 
     public NoteDetailItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -48,9 +30,10 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
         final SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mEntry.setNote(mEditText.getText().toString());
-                mHandler.removeCallbacks(mSaveNoteTask);
-                mHandler.postDelayed(mSaveNoteTask, Config.EDIT_SAVE_DURATION);
+                final TextContentEntry entry = getEntry();
+                if (entry != null) {
+                    entry.setNoteCache(mEditText.getText().toString());
+                }
             }
         };
         mEditText.addTextChangedListener(textWatcher);
@@ -58,26 +41,37 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
 
     @Override
     public void bindItem(@NonNull BaseRecyclerItem item) {
-        if (item instanceof TextNoteItem) {
-            final TextNoteItem noteItem = (TextNoteItem) item;
-            mEntry = noteItem.getEntry();
-            final String content = mEntry.getNote();
-            if (content != null) {
-                mEditText.setText(content);
-            }
-            updateTime();
+        super.bindItem(item);
+        final TextContentEntry entry = getEntry();
+        if (entry == null) {
+            return;
         }
-    }
-
-    private void updateTime() {
-        if (mEntry != null) {
-            mUpdateTime.setText(getResources()
-                    .getString(R.string.update_time, Tools.getDateString(mEntry.getUpdateTime())));
+        final String content = entry.isChanged() ? entry.getNoteCache() : entry.getNote();
+        if (content != null) {
+            mEditText.setText(content);
         }
+        mUpdateTime.setText(getUpdateTimeStr(entry.getUpdateTime()));
     }
 
     @Override
-    public void unBindItem() {
-        mEntry = null;
+    public void onDataUpdate() {
+        final TextContentEntry entry = getEntry();
+        if (entry == null) {
+            return;
+        }
+        mUpdateTime.setText(getUpdateTimeStr(entry.getUpdateTime()));
+    }
+
+    @Nullable
+    private TextContentEntry getEntry() {
+        if (mItem != null && mItem instanceof TextNoteItem) {
+            return ((TextNoteItem) mItem).mEntry;
+        }
+        return null;
+    }
+
+    @NonNull
+    private String getUpdateTimeStr(long updateTime) {
+        return getResources().getString(R.string.update_time, Tools.getDateString(updateTime));
     }
 }

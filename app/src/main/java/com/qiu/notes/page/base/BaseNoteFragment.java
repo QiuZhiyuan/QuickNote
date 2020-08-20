@@ -59,6 +59,18 @@ public abstract class BaseNoteFragment extends Fragment implements View.OnClickL
     }
 
     @Override
+    public void onResume() {
+        getNoteSection().onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        getNoteSection().onPause();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         if (mStateChangeListenerList != null) {
             mStateChangeListenerList.clear();

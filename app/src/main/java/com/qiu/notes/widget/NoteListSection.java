@@ -71,7 +71,11 @@ public class NoteListSection extends BaseRecyclerSection {
     private void prepareItems(@NonNull List<TextContentEntry> entryList) {
         List<BaseRecyclerItem> itemList = new ArrayList<>();
         for (TextContentEntry entry : entryList) {
-            itemList.add(new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry));
+            if (!entry.isEmpty()) {
+                itemList.add(new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry));
+            } else {
+                entry.delete();
+            }
         }
         mListEntry.clear();
         mListEntry.addAll(itemList);

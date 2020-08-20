@@ -10,7 +10,7 @@ public class TextNoteItem extends BaseRecyclerItem {
     private final int mId;
 
     @NonNull
-    private final TextContentEntry mEntry;
+    public final TextContentEntry mEntry;
 
     public TextNoteItem(int id, @NonNull TextContentEntry entry) {
         mId = id;
@@ -20,10 +20,5 @@ public class TextNoteItem extends BaseRecyclerItem {
     @Override
     public int getId() {
         return mId;
-    }
-
-    @NonNull
-    public TextContentEntry getEntry() {
-        return mEntry;
     }
 }

@@ -9,18 +9,18 @@ public class TextContentEntry {
     private final long mId;
     private final long mCreatedTime;
     private long mUpdateTime;
-    private boolean mIsChanged;
-
     @Nullable
     private String mNote;
+    @Nullable
+    private String mNoteCache;
 
     public TextContentEntry(long id, long createdTime, long updateTime,
             @Nullable String note) {
         this.mId = id;
         mCreatedTime = createdTime;
         mUpdateTime = updateTime;
-        mIsChanged = false;
         mNote = note;
+        mNoteCache = mNote;
     }
 
     public long getId() {
@@ -39,11 +39,13 @@ public class TextContentEntry {
         mUpdateTime = updateTime;
     }
 
-    public void setNote(@Nullable String note) {
-        mIsChanged = !TextUtils.equals(note, mNote);
-        if (mIsChanged) {
-            mNote = note;
-        }
+    public void setNoteCache(@Nullable String note) {
+        mNoteCache = note;
+    }
+
+    @Nullable
+    public String getNoteCache() {
+        return mNoteCache;
     }
 
     @Nullable
@@ -52,12 +54,12 @@ public class TextContentEntry {
     }
 
     public boolean isChanged() {
-        return mIsChanged;
+        return !TextUtils.equals(mNote, mNoteCache);
     }
 
     public void save() {
+        mNote = mNoteCache;
         InternalDataProvider.i().getNoteDataHolder().update(this);
-        mIsChanged = false;
     }
 
     public void delete() {
@@ -65,6 +67,6 @@ public class TextContentEntry {
     }
 
     public boolean isEmpty() {
-        return TextUtils.isEmpty(mNote);
+        return TextUtils.isEmpty(mNote) || TextUtils.isEmpty(mNoteCache);
     }
 }
