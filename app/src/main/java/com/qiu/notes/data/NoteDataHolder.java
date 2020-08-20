@@ -93,11 +93,12 @@ public class NoteDataHolder {
 
     private void insert(@NonNull TextContentEntry entry) {
         mNoteDatabase.insert(entry.getId(), entry.getCreatedTime(), entry.getUpdateTime(),
-                entry.getNote());
+                entry.getTitle(), entry.getNote());
     }
 
     public void update(@NonNull TextContentEntry entry) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteDatabaseImpl.DBEntry.TITLE, entry.getTitle());
         contentValues.put(NoteDatabaseImpl.DBEntry.CONTENT, entry.getNote());
         contentValues.put(NoteDatabaseImpl.DBEntry.UPDATE_TIME, entry.getUpdateTime());
         mNoteDatabase.update(entry.getId(), contentValues);
@@ -112,7 +113,7 @@ public class NoteDataHolder {
         final long id = createNewId();
         final long createTime = System.currentTimeMillis();
         final long updateTime = System.currentTimeMillis();
-        final TextContentEntry entry = new TextContentEntry(id, createTime, updateTime, null);
+        final TextContentEntry entry = new TextContentEntry(id, createTime, updateTime, null, null);
         insert(entry);
         return entry;
     }

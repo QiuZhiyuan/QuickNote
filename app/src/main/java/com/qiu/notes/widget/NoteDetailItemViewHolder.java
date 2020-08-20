@@ -1,6 +1,7 @@
 package com.qiu.notes.widget;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,12 +23,24 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
     private final EditText mEditText;
     @NonNull
     private final TextView mUpdateTime;
+    @NonNull
+    private final EditText mEditTitle;
 
     public NoteDetailItemViewHolder(@NonNull View itemView) {
         super(itemView);
         mUpdateTime = itemView.findViewById(R.id.update_time);
-        mEditText = itemView.findViewById(R.id.edit_text_note_view);
-        final SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
+        mEditTitle = itemView.findViewById(R.id.edit_text_note_title);
+        mEditTitle.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                final TextContentEntry entry = getEntry();
+                if (entry != null) {
+                    entry.setTitleCache(mEditTitle.getText().toString());
+                }
+            }
+        });
+        mEditText = itemView.findViewById(R.id.edit_text_note_content);
+        mEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 final TextContentEntry entry = getEntry();
@@ -35,8 +48,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
                     entry.setNoteCache(mEditText.getText().toString());
                 }
             }
-        };
-        mEditText.addTextChangedListener(textWatcher);
+        });
     }
 
     @Override
@@ -46,8 +58,12 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
         if (entry == null) {
             return;
         }
+        final String title = entry.isChanged() ? entry.getTitleCache() : entry.getTitle();
+        if (!TextUtils.isEmpty(title)) {
+            mEditTitle.setText(title);
+        }
         final String content = entry.isChanged() ? entry.getNoteCache() : entry.getNote();
-        if (content != null) {
+        if (!TextUtils.isEmpty(content)) {
             mEditText.setText(content);
         }
         mUpdateTime.setText(getUpdateTimeStr(entry.getUpdateTime()));
