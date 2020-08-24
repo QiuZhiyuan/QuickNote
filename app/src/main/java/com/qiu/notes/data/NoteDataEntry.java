@@ -6,21 +6,20 @@ import androidx.annotation.Nullable;
 
 import com.qiu.base.lib.data.db.TableBaseEntry;
 import com.qiu.base.lib.data.db.anno.Column;
-import com.qiu.base.lib.data.db.anno.ColumnType;
 import com.qiu.base.lib.data.db.anno.Table;
 
 @Table(name = "NoteTable")
 public class NoteDataEntry extends TableBaseEntry {
 
-    @Column(name = "create_time", type = ColumnType.INTEGER)
+    @Column(name = "create_time")
     private long mCreateTime;
-    @Column(name = "update_time", type = ColumnType.INTEGER)
+    @Column(name = "update_time")
     private long mUpdateTime;
     @Nullable
-    @Column(name = "content", type = ColumnType.TEXT)
+    @Column(name = "content")
     private String mNote;
     @Nullable
-    @Column(name = "title", type = ColumnType.INTEGER)
+    @Column(name = "title")
     private String mTitle;
     @Nullable
     private String mNoteCache;
