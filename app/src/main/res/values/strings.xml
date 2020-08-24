@@ -3,4 +3,8 @@
     <string name="desc">desc</string>
     <string name="create_time">创建时间：%1$s</string>
     <string name="update_time">更新时间：%1$s</string>
+
+    <string name="is_delete">是否删除?</string>
+    <string name="selection_yes">是</string>
+    <string name="selection_no">否</string>
 </resources>

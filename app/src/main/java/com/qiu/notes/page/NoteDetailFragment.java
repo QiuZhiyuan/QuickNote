@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
-import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.data.NoteContentEntry;
 import com.qiu.notes.page.base.BaseNoteFragment;
 import com.qiu.notes.widget.NoteDetailSection;
 
@@ -16,13 +16,13 @@ public class NoteDetailFragment extends BaseNoteFragment {
     private static final String KEY_NOTE_ID = "note_id";
 
     @NonNull
-    private final TextContentEntry mEntry;
+    private final NoteContentEntry mEntry;
     @NonNull
     private final NoteDetailSection mSection;
 
     private NoteDetailFragment(long noteId) {
-        TextContentEntry entry;
-        entry = InternalDataProvider.i().getNoteDataHolder().findEntryById(noteId);
+        NoteContentEntry entry;
+        entry = InternalDataProvider.i().getNoteDataHelper().findEntryById(noteId);
         mEntry = entry;
         mSection = new NoteDetailSection(mEntry);
     }

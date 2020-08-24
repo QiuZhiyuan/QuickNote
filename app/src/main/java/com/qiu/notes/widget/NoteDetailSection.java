@@ -2,13 +2,13 @@ package com.qiu.notes.widget;
 
 import android.view.ViewGroup;
 
-import com.qiu.base.lib.thread.ThreadUtils;
 import com.qiu.base.lib.tools.UniqueId;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerSection;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
-import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.data.InternalDataProvider;
+import com.qiu.notes.data.NoteContentEntry;
 import com.qiu.notes.widget.base.TextNoteItem;
 
 import androidx.annotation.NonNull;
@@ -33,23 +33,11 @@ public class NoteDetailSection extends BaseRecyclerSection {
     }
 
     @NonNull
-    private final Runnable mSaveNoteTask = new Runnable() {
-        @Override
-        public void run() {
-            if (mItem.mEntry.isChanged()) {
-                mItem.mEntry.setUpdateTime(System.currentTimeMillis());
-                mItem.onDataUpdate();
-                mItem.mEntry.save();
-            }
-        }
-    };
-
-    @NonNull
     private NoteViewHolderFactory mNoteViewHolderFactory = new NoteViewHolderFactory();
     @NonNull
     private final TextNoteItem mItem;
 
-    public NoteDetailSection(@NonNull TextContentEntry entry) {
+    public NoteDetailSection(@NonNull NoteContentEntry entry) {
         mItem = new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry);
         prepareItems();
     }
@@ -63,16 +51,24 @@ public class NoteDetailSection extends BaseRecyclerSection {
     protected ViewHolderFactory getViewHolderFactory() {
         return mNoteViewHolderFactory;
     }
-    
+
     @Override
     public void onPause() {
-        ThreadUtils.i().postMain(mSaveNoteTask);
+        updateData();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        ThreadUtils.i().postMain(mSaveNoteTask);
+        updateData();
         super.onDestroy();
+    }
+
+    private void updateData() {
+        if (mItem.mEntry.isHasCache()) {
+            mItem.mEntry.setUpdateTime(System.currentTimeMillis());
+            mItem.onDataUpdate();
+            InternalDataProvider.i().getNoteDataHelper().update(mItem.mEntry);
+        }
     }
 }

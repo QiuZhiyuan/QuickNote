@@ -18,18 +18,18 @@ public class InternalDataProvider {
     }
 
     @NonNull
-    private final NoteDataHolder mNoteDataHolder;
+    private final NoteDataHelper mNoteDataHolder;
 
     @NonNull
     private final SettingDataHolder mSettingDataHolder;
 
 
     private InternalDataProvider() {
-        mNoteDataHolder = new NoteDataHolder();
+        mNoteDataHolder = new NoteDataHelper();
         mSettingDataHolder = new SettingDataHolder();
     }
 
-    public NoteDataHolder getNoteDataHolder() {
+    public NoteDataHelper getNoteDataHelper() {
         return mNoteDataHolder;
     }
 
