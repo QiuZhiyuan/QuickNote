@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
-import com.qiu.notes.data.NoteContentEntry;
+import com.qiu.notes.data.NoteDataEntry;
 import com.qiu.notes.utils.simple.SimpleTextWatcher;
 import com.qiu.notes.utils.Tools;
 import com.qiu.notes.widget.base.TextNoteItem;
@@ -33,7 +33,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
         mEditTitle.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                final NoteContentEntry entry = getEntry();
+                final NoteDataEntry entry = getEntry();
                 if (entry != null) {
                     entry.setTitleCache(mEditTitle.getText().toString());
                 }
@@ -43,7 +43,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
         mEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                final NoteContentEntry entry = getEntry();
+                final NoteDataEntry entry = getEntry();
                 if (entry != null) {
                     entry.setNoteCache(mEditText.getText().toString());
                 }
@@ -54,7 +54,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
     @Override
     public void bindItem(@NonNull BaseRecyclerItem item) {
         super.bindItem(item);
-        final NoteContentEntry entry = getEntry();
+        final NoteDataEntry entry = getEntry();
         if (entry == null) {
             return;
         }
@@ -71,7 +71,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
 
     @Override
     public void onDataUpdate() {
-        final NoteContentEntry entry = getEntry();
+        final NoteDataEntry entry = getEntry();
         if (entry == null) {
             return;
         }
@@ -79,7 +79,7 @@ public class NoteDetailItemViewHolder extends BaseRecyclerViewHolder {
     }
 
     @Nullable
-    private NoteContentEntry getEntry() {
+    private NoteDataEntry getEntry() {
         if (mItem != null && mItem instanceof TextNoteItem) {
             return ((TextNoteItem) mItem).mEntry;
         }
