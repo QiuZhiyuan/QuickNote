@@ -4,37 +4,38 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-public class TextContentEntry {
+import com.qiu.base.lib.data.db.TableBaseEntry;
+import com.qiu.base.lib.data.db.anno.Column;
+import com.qiu.base.lib.data.db.anno.ColumnType;
+import com.qiu.base.lib.data.db.anno.Table;
 
-    private final long mId;
-    private final long mCreatedTime;
+@Table(name = "NoteTable")
+public class NoteContentEntry extends TableBaseEntry {
+
+    @Column(name = "create_time", type = ColumnType.INTEGER)
+    private long mCreateTime;
+    @Column(name = "update_time", type = ColumnType.INTEGER)
     private long mUpdateTime;
     @Nullable
+    @Column(name = "content", type = ColumnType.TEXT)
     private String mNote;
+    @Nullable
+    @Column(name = "title", type = ColumnType.INTEGER)
+    private String mTitle;
     @Nullable
     private String mNoteCache;
     @Nullable
-    private String mTitle;
-    @Nullable
     private String mTitleCache;
 
-    public TextContentEntry(long id, long createdTime, long updateTime, @Nullable String title,
-            @Nullable String note) {
-        this.mId = id;
-        mCreatedTime = createdTime;
-        mUpdateTime = updateTime;
-        mTitle = title;
-        mNote = note;
-        mNoteCache = mNote;
-        mTitleCache = mTitle;
+    public NoteContentEntry() {
     }
 
-    public long getId() {
-        return mId;
+    public long getCreateTime() {
+        return mCreateTime;
     }
 
-    public long getCreatedTime() {
-        return mCreatedTime;
+    public void setCreateTime(long createTime) {
+        mCreateTime = createTime;
     }
 
     public long getUpdateTime() {
@@ -43,6 +44,26 @@ public class TextContentEntry {
 
     public void setUpdateTime(long updateTime) {
         mUpdateTime = updateTime;
+    }
+
+    @Nullable
+    public String getNote() {
+        return mNote;
+    }
+
+    public void setNote(@Nullable String note) {
+        mNote = note;
+        mNoteCache = mNote;
+    }
+
+    @Nullable
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(@Nullable String title) {
+        mTitle = title;
+        mTitleCache = mTitle;
     }
 
     @Nullable
@@ -63,28 +84,14 @@ public class TextContentEntry {
         return mNoteCache;
     }
 
-    @Nullable
-    public String getTitle() {
-        return mTitle;
-    }
 
-    @Nullable
-    public String getNote() {
-        return mNote;
-    }
-
-    public boolean isChanged() {
+    public boolean isHasCache() {
         return !TextUtils.equals(mNote, mNoteCache) || !TextUtils.equals(mTitle, mTitleCache);
     }
 
-    public void save() {
+    public void resetCache() {
         mNote = mNoteCache;
         mTitle = mTitleCache;
-        InternalDataProvider.i().getNoteDataHolder().update(this);
-    }
-
-    public void delete() {
-        InternalDataProvider.i().getNoteDataHolder().delete(this);
     }
 
     public boolean isEmpty() {

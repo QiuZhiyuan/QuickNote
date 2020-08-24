@@ -7,7 +7,8 @@ import com.qiu.base.lib.eventbus.EventDispatcher;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
-import com.qiu.notes.data.TextContentEntry;
+import com.qiu.notes.data.InternalDataProvider;
+import com.qiu.notes.data.NoteContentEntry;
 import com.qiu.notes.event.RefreshNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.widget.base.TextNoteItem;
@@ -28,7 +29,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
     @NonNull
     private final TextView mNoteContent;
     @Nullable
-    private TextContentEntry mEntry;
+    private NoteContentEntry mEntry;
 
     public NoteListItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -65,18 +66,22 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
 
     @Override
     public boolean onLongClick(View v) {
-        showDeleteDialog();
+        showDeleteAlert();
         return false;
     }
 
-    private void showDeleteDialog() {
-        new AlertDialog.Builder(itemView.getContext()).setMessage("是否删除?").setNegativeButton("否",
-                (dialog, which) -> dialog.dismiss()).setPositiveButton("是", (dialog, which) -> {
-            if (mEntry != null) {
-                mEntry.delete();
-                EventDispatcher.post(new RefreshNoteEvent());
-            }
-            dialog.dismiss();
-        }).create().show();
+    private void showDeleteAlert() {
+        new AlertDialog.Builder(itemView.getContext())
+                .setMessage(getResources().getString(R.string.is_delete))
+                .setNegativeButton(getResources().getString(R.string.selection_no),
+                        (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(getResources().getString(R.string.selection_yes),
+                        (dialog, which) -> {
+                            if (mEntry != null) {
+                                InternalDataProvider.i().getNoteDataHelper().delete(mEntry);
+                                EventDispatcher.post(new RefreshNoteEvent());
+                            }
+                            dialog.dismiss();
+                        }).create().show();
     }
 }

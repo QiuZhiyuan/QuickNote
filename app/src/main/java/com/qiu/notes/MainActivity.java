@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.qiu.base.lib.eventbus.EventDispatcher;
-import com.qiu.notes.data.NoteDataHolder;
+import com.qiu.notes.data.NoteDataHelper;
 import com.qiu.notes.event.AddNewNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.page.base.BaseNoteActivity;
@@ -29,7 +29,7 @@ public class MainActivity extends BaseNoteActivity {
         @Subscribe
         public void addNewNote(AddNewNoteEvent event) {
             addFragmentToBackStack(
-                    NoteDetailFragment.getInstance(NoteDataHolder.CREATE_NEW_ENTRY_ID));
+                    NoteDetailFragment.getInstance(NoteDataHelper.CREATE_NEW_ENTRY_ID));
         }
     }
 
