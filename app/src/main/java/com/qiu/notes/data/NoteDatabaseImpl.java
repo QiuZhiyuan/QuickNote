@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 
 import com.qiu.base.lib.data.db.TableStorageImpl;
 
-public class NoteDatabaseImpl extends TableStorageImpl<NoteContentEntry> {
+public class NoteDatabaseImpl extends TableStorageImpl<NoteDataEntry> {
 
     private static volatile NoteDatabaseImpl sInstance;
 
     protected NoteDatabaseImpl() {
-        super(NoteContentEntry.class);
+        super(NoteDataEntry.class);
     }
 
     public static NoteDatabaseImpl instance() {

@@ -8,7 +8,7 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
-import com.qiu.notes.data.NoteContentEntry;
+import com.qiu.notes.data.NoteDataEntry;
 import com.qiu.notes.widget.base.TextNoteItem;
 
 import androidx.annotation.NonNull;
@@ -37,7 +37,7 @@ public class NoteDetailSection extends BaseRecyclerSection {
     @NonNull
     private final TextNoteItem mItem;
 
-    public NoteDetailSection(@NonNull NoteContentEntry entry) {
+    public NoteDetailSection(@NonNull NoteDataEntry entry) {
         mItem = new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry);
         prepareItems();
     }

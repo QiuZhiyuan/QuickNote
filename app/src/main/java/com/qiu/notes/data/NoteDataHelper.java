@@ -13,12 +13,12 @@ public class NoteDataHelper {
     public static final long CREATE_NEW_ENTRY_ID = -1;
 
     @NonNull
-    private ListEntry<NoteContentEntry> mNoteListEntry = new ListEntry<>();
+    private ListEntry<NoteDataEntry> mNoteListEntry = new ListEntry<>();
 
     public NoteDataHelper() {
     }
 
-    public void queryAll(@NonNull Callback<List<NoteContentEntry>> callback) {
+    public void queryAll(@NonNull Callback<List<NoteDataEntry>> callback) {
         NoteDatabaseImpl.instance().queryAll(noteContentEntries -> {
             mNoteListEntry.clear();
             mNoteListEntry.addAll(noteContentEntries);
@@ -33,13 +33,13 @@ public class NoteDataHelper {
      * @return
      */
     @NonNull
-    public NoteContentEntry findEntryById(long noteId) {
+    public NoteDataEntry findEntryById(long noteId) {
         if (noteId == CREATE_NEW_ENTRY_ID) {
             return createNewEntry();
         }
-        Iterator<NoteContentEntry> iterator = mNoteListEntry.getIterator();
+        Iterator<NoteDataEntry> iterator = mNoteListEntry.getIterator();
         while (iterator.hasNext()) {
-            final NoteContentEntry entry = iterator.next();
+            final NoteDataEntry entry = iterator.next();
             if (entry.getId() == noteId) {
                 return entry;
             }
@@ -48,26 +48,26 @@ public class NoteDataHelper {
     }
 
     @NonNull
-    private NoteContentEntry createNewEntry() {
+    private NoteDataEntry createNewEntry() {
         final long createTime = System.currentTimeMillis();
         final long updateTime = System.currentTimeMillis();
-        final NoteContentEntry entry = new NoteContentEntry();
+        final NoteDataEntry entry = new NoteDataEntry();
         entry.setCreateTime(createTime);
         entry.setUpdateTime(updateTime);
         return entry;
     }
 
-    public void save(@NonNull NoteContentEntry entry) {
+    public void save(@NonNull NoteDataEntry entry) {
         entry.resetCache();
         NoteDatabaseImpl.instance().insert(entry);
     }
 
-    public void update(@NonNull NoteContentEntry entry) {
+    public void update(@NonNull NoteDataEntry entry) {
         entry.resetCache();
         NoteDatabaseImpl.instance().update(entry);
     }
 
-    public void delete(@NonNull NoteContentEntry entry) {
+    public void delete(@NonNull NoteDataEntry entry) {
         NoteDatabaseImpl.instance().delete(entry);
     }
 }

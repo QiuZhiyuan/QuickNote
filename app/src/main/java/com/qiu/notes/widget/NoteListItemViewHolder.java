@@ -8,7 +8,7 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerItem;
 import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
-import com.qiu.notes.data.NoteContentEntry;
+import com.qiu.notes.data.NoteDataEntry;
 import com.qiu.notes.event.RefreshNoteEvent;
 import com.qiu.notes.event.ShowFragmentEvent;
 import com.qiu.notes.widget.base.TextNoteItem;
@@ -29,7 +29,7 @@ public class NoteListItemViewHolder extends BaseRecyclerViewHolder implements Vi
     @NonNull
     private final TextView mNoteContent;
     @Nullable
-    private NoteContentEntry mEntry;
+    private NoteDataEntry mEntry;
 
     public NoteListItemViewHolder(@NonNull View itemView) {
         super(itemView);

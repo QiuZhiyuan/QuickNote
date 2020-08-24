@@ -10,7 +10,7 @@ import com.qiu.base.lib.data.db.anno.ColumnType;
 import com.qiu.base.lib.data.db.anno.Table;
 
 @Table(name = "NoteTable")
-public class NoteContentEntry extends TableBaseEntry {
+public class NoteDataEntry extends TableBaseEntry {
 
     @Column(name = "create_time", type = ColumnType.INTEGER)
     private long mCreateTime;
@@ -27,7 +27,7 @@ public class NoteContentEntry extends TableBaseEntry {
     @Nullable
     private String mTitleCache;
 
-    public NoteContentEntry() {
+    public NoteDataEntry() {
     }
 
     public long getCreateTime() {

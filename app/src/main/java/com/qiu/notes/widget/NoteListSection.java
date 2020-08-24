@@ -11,7 +11,7 @@ import com.qiu.base.lib.widget.recycler.BaseRecyclerViewHolder;
 import com.qiu.base.lib.widget.recycler.ViewHolderFactory;
 import com.qiu.notes.R;
 import com.qiu.notes.data.InternalDataProvider;
-import com.qiu.notes.data.NoteContentEntry;
+import com.qiu.notes.data.NoteDataEntry;
 import com.qiu.notes.event.RefreshNoteEvent;
 import com.qiu.notes.widget.base.TextNoteItem;
 
@@ -68,9 +68,9 @@ public class NoteListSection extends BaseRecyclerSection {
         InternalDataProvider.i().getNoteDataHelper().queryAll(this::prepareItems);
     }
 
-    private void prepareItems(@NonNull List<NoteContentEntry> entryList) {
+    private void prepareItems(@NonNull List<NoteDataEntry> entryList) {
         List<BaseRecyclerItem> itemList = new ArrayList<>();
-        for (NoteContentEntry entry : entryList) {
+        for (NoteDataEntry entry : entryList) {
             if (!entry.isEmpty()) {
                 itemList.add(new TextNoteItem(ID_NOTE_DETAIL_ITEM, entry));
             } else {
