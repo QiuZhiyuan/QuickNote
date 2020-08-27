@@ -54,6 +54,7 @@ public class NoteDataHelper {
         final NoteDataEntry entry = new NoteDataEntry();
         entry.setCreateTime(createTime);
         entry.setUpdateTime(updateTime);
+        save(entry);
         return entry;
     }
 
